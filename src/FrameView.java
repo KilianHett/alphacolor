@@ -32,6 +32,7 @@ public class FrameView extends JFrame
 		this.add(panelTools,BorderLayout.EAST);
 	}
 
+	
 	public void paint(Graphics g)
 	{
 		// TODO Dessiner l'arriere plan ( motif de transparence ) 	
