@@ -20,7 +20,7 @@ public class FrameView extends JFrame
 	{
 		super();
 		this.setPreferredSize(
-				new Dimension(900,800,));
+				new Dimension(900,800));
 		this.setLayout(new BorderLayout());
 
 		panelImage = new PanelImage();
@@ -35,7 +35,7 @@ public class FrameView extends JFrame
 	public void paint(Graphics g)
 	{
 		// TODO Dessiner l'arriere plan ( motif de transparence ) 	
-
+		
 		panelImage.repaint();
 		panelTools.repaint();
 	}

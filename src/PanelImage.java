@@ -1,6 +1,7 @@
 
 import javax.swing.JPanel;
-import java.awt.image.BufferdImage;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 import java.awt.Graphics;
 
 /**
