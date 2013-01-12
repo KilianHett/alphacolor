@@ -1,6 +1,9 @@
 
-java.awt.image.BufferedImage:
-javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.FileInputStream;
+
 
 public class ColorUtils 
 {
@@ -11,23 +14,32 @@ public class ColorUtils
 	// Constante sur les couleurs
 	public final static int ALPHA = 0xff000000;
 
-
-	public static short canalRouge(short value)
+	public static int complement(int value)
 	{
-		return value&0x00ff0000;
+		return (value^0xffffff);
 	}
 
-	public static short canalVert(short value)
+	public static int canalAlpha(int value)
 	{
-		return value&0x0000ff00;
+		return (value&0xff000000)>>24;
 	}
 
-	public static short canalBleu(short value)
+	public static int canalRouge(int value)
+	{
+		return (value&0x00ff0000)>>16;
+	}
+
+	public static int canalVert(int value)
+	{
+		return (value&0x0000ff00)>>8;
+	}
+
+	public static int canalBleu(int value)
 	{
 		return value&0x000000ff;
 	}
 
-	public boolean changeColour(BufferedImage im, int color)
+	public static boolean changeColour(BufferedImage im, int color)
 	{
 		try
 		{
@@ -47,21 +59,31 @@ public class ColorUtils
 		{
 			System.out.println(e.getMessage());
 			e.printStackTrace();
+			return false;
 		}
 	}
 
 	public static BufferedImage loadImage(String path)
 	{
-		return ImageIO.read(path);
+		try
+		{
+			return ImageIO.read(new File(path));
+		}
+		catch (Exception e)
+		{
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 
-	public static void saveImage(BufferdImage im, String path, String format)
+	public static void saveImage(BufferedImage im, String path, String format)
 	{
 		File out = new File(path);
 		try
 		{
-			ImageIo.write(im, format, path);
+			ImageIO.write (im, format, out);
 		}
 		catch (Exception e)
 		{

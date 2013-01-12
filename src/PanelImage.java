@@ -3,6 +3,7 @@ import javax.swing.JPanel;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.awt.Graphics;
+import java.awt.Color;
 
 /**
  * @author HETT KILIAN
@@ -13,11 +14,15 @@ import java.awt.Graphics;
 public class PanelImage extends JPanel
 {
 	private BufferedImage image;
+	private int color;
 
 	public PanelImage(String url)
 	{
 		super();
-		loadImage(url);
+		this.setVisible(true);
+		this.setSize(400,800);
+		if (url!="")
+			loadImage(url);
 	}
 
 	public PanelImage()
@@ -31,15 +36,7 @@ public class PanelImage extends JPanel
 	*/
 	public void loadImage(String url)
 	{
-		try
-		{
-			image = ImageIO.read(url);
-		}
-		catch (Exception e)
-		{
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		}	
+		image = ColorUtils.loadImage(url);
 	}
 
 	/**
@@ -48,7 +45,28 @@ public class PanelImage extends JPanel
 	*/
 	public void paint(Graphics g)
 	{
-		g.drawImage(image,0,0,null);
+		if (image!=null)
+			g.drawImage(image,0,0,image.getWidth(),image.getHeight(),null);
 	}
 
+	public void setImage(BufferedImage im)
+	{
+		image = im;
+	}
+
+	public BufferedImage getImage()
+	{
+		return image;
+	}
+
+	public int getPixel(int x, int y)
+	{
+		return image.getRGB(x,y);
+	}
+
+	public void setColor(int value)
+	{
+		color = value;
+	}
+	
 }
