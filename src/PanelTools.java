@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JSlider;
 
 
 /**
@@ -25,6 +26,9 @@ import javax.swing.JMenuItem;
 */
 public final class PanelTools extends JPanel
 {
+	private String path;
+	private int delta;
+
 	private JTextField value;
 	private JButton convert;
 	private JMenu menu;
@@ -34,20 +38,25 @@ public final class PanelTools extends JPanel
 	private JMenuItem load;
 	private JMenuItem save;
 	private JMenuItem quit;
+	private JSlider deltaSlider;
 
 	private PanelImage panelImage;
 
 	public PanelTools()
 	{
 		super();
+	
+		delta = 0;
 
 		value = new JTextField("None");
 		convert = new JButton("Convertir");
 		load = new JMenuItem("Charger");
 		save = new JMenuItem("Enregistrer sous");
 		quit = new JMenuItem("Quitter");
+		deltaSlider = new JSlider(0,255);
 
-		
+		deltaSlider.setValue(delta);	
+		deltaSlider.setPaintLabels(true);	
 		load.setEnabled(true);
 		save.setEnabled(false);
 		quit.setEnabled(true);
@@ -56,6 +65,7 @@ public final class PanelTools extends JPanel
 		pnl.setLayout(new GridLayout(14,1));
 		pnl.add(value);
 		pnl.add(convert);
+		pnl.add(deltaSlider);
 
 		aide = new JMenu("Aide");
 		menu = new JMenu("Fichier");
@@ -100,7 +110,7 @@ public final class PanelTools extends JPanel
 		{
 			public void mouseClicked(MouseEvent e)
 			{
-				panelImage.toAlpha();	
+				panelImage.toAlpha(delta);	
 			}
 			public void mouseEntered(MouseEvent e){}
 			public void mouseExited(MouseEvent e){}
@@ -137,7 +147,18 @@ public final class PanelTools extends JPanel
 			public void mousePressed(MouseEvent e){}
 			public void mouseReleased(MouseEvent e){}	
 		});
-
+		
+		deltaSlider.addMouseListener(new MouseListener()
+		{
+			public void mouseClicked(MouseEvent e){}
+			public void mouseEntered(MouseEvent e){}
+			public void mouseExited(MouseEvent e){}
+			public void mousePressed(MouseEvent e){}
+			public void mouseReleased(MouseEvent e)
+			{
+				delta = deltaSlider.getValue();
+			}	
+		});
 	}
 
 	public void setPanelImage(PanelImage pnlImg)
@@ -154,7 +175,7 @@ public final class PanelTools extends JPanel
 		quit.repaint();
 		menu.repaint();
 		aide.repaint();
-
+		deltaSlider.repaint();
 	}
 
 	public void modifyValue(Color back,Color text)
@@ -165,5 +186,4 @@ public final class PanelTools extends JPanel
 		value.setText("("+back.getRed()+","+back.getGreen()+
 				","+back.getBlue()+")");
 	}
-
 }

@@ -68,8 +68,19 @@ public class ColorUtils
 		return tmp;
 	}
 
+	public static boolean inInterval(int value, int sigma, int delta)
+	{
+		return (value<=sigma+delta) && (value>=sigma-delta);
+	}
 
-	public static boolean changeColour(BufferedImage im, int color)
+	public static boolean isInColorInterval(int value, int color, int delta)
+	{
+		return inInterval(canalRouge(value), canalRouge(color), delta) &&
+			inInterval(canalVert(value), canalVert(color), delta) &&
+			inInterval(canalBleu(value), canalBleu(color), delta);
+	}
+
+	public static boolean changeColour(BufferedImage im, int color, int delta)
 	{
 		try
 		{
@@ -77,7 +88,7 @@ public class ColorUtils
 			{
 				for (int j=0;j<im.getHeight();j++)
 				{
-					if (im.getRGB(i,j)==color)
+					if (isInColorInterval(im.getRGB(i,j),color,delta))
 					{
 						im.setRGB(i,j,ALPHA);
 					}

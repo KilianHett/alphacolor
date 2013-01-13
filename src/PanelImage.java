@@ -86,9 +86,9 @@ public final class PanelImage extends JPanel
 		color = value;
 	}
 
-	public void toAlpha()
+	public void toAlpha(int delta)
 	{
-		ColorUtils.changeColour(image,color);
+		ColorUtils.changeColour(image,color,delta);
 		repaint();
 	}
 
