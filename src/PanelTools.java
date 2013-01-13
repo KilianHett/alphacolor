@@ -5,6 +5,10 @@ import javax.swing.JButton;
 import java.awt.GridLayout;
 import java.awt.Graphics;
 import java.awt.Color;
+import javax.swing.JFileChooser;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
+
 
 /**
  * @author HETT KILIAN
@@ -38,8 +42,28 @@ public final class PanelTools extends JPanel
 		this.add(save);
 		this.add(value);
 		this.add(convert);
-
+		
+		initEvent();
 		repaint();
+	}
+
+	public void initEvent()
+	{
+		load.addMouseListener(new MouseListener()
+		{
+			public void mouseClicked(MouseEvent e)
+			{
+				JFileChooser loader = new JFileChooser("~");
+				if(loader.showOpenDialog(load)==JFileChooser.APPROVE_OPTION)
+				{
+					panelImage.loadImage(loader.getSelectedFile().getPath());
+				}
+			}
+			public void mouseEntered(MouseEvent e){}
+			public void mouseExited(MouseEvent e){}
+			public void mousePressed(MouseEvent e){}
+			public void mouseReleased(MouseEvent e){}	
+		});
 	}
 
 	public void setPanelImage(PanelImage pnlImg)
@@ -53,7 +77,6 @@ public final class PanelTools extends JPanel
 		save.repaint();
 		convert.repaint();
 		load.repaint();
-
 	}
 
 	public void modifyValue(Color back,Color text)

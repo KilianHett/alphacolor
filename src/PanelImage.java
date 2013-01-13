@@ -11,7 +11,7 @@ import java.awt.Color;
  * Cette classe se charge d'afficher les images
  * elle supporte les comportements de clique de la souris
 **/
-public class PanelImage extends JPanel
+public final class PanelImage extends JPanel
 {
 	private BufferedImage image;
 	private int color;

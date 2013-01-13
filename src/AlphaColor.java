@@ -7,7 +7,7 @@ import javax.imageio.ImageIO;
  * Classe principale du programme, fait appelle à FrameView
  * dans le cas ou l'utilisateur à préciser un chemin d'image
  * l'ouvrir
-*/
+**/
 final public class AlphaColor
 {
 	public static void main(String[] args)
