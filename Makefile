@@ -8,3 +8,5 @@ default:
 exec:
 	@java -cp bin AlphaColor
 
+clean:
+	@rm bin/*.class

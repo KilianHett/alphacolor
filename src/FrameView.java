@@ -43,7 +43,11 @@ public final class FrameView extends JFrame
 		this.repaint();
 		this.pack();
 	}
-
+	
+	/**
+	 * Fonction initialisant les évenements liés à 
+	 * l'interface grpahique.
+	*/
 	private	void initEvent()
 	{
 		panelImage.addMouseListener(new MouseListener()
@@ -77,10 +81,11 @@ public final class FrameView extends JFrame
 	}
 
 	public void paint(Graphics g)
-	{
-		// TODO Dessiner l'arriere plan ( motif de transparence ) 	
-		panelImage.repaint();
-		panelTools.repaint();
+	{ 	
+		if (panelImage!=null)
+			panelImage.repaint();
+		if (panelTools!=null)
+			panelTools.repaint();
 	}
 }
 
