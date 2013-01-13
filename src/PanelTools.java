@@ -1,13 +1,20 @@
 
 import javax.swing.JPanel;
+import java.awt.Dimension;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.GridLayout;
+import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Color;
 import javax.swing.JFileChooser;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 
 /**
@@ -20,9 +27,13 @@ public final class PanelTools extends JPanel
 {
 	private JTextField value;
 	private JButton convert;
-	private JButton load;
-	private JButton save;
-	private JButton quit;
+	private JMenu menu;
+	private JMenu option;
+	private JMenu aide;
+	private JMenuBar menubar;
+	private JMenuItem load;
+	private JMenuItem save;
+	private JMenuItem quit;
 
 	private PanelImage panelImage;
 
@@ -32,35 +43,51 @@ public final class PanelTools extends JPanel
 
 		value = new JTextField("None");
 		convert = new JButton("Convertir");
-		load = new JButton("Charger");
-		save = new JButton("Sauver");
-		quit = new JButton("Quitter");
+		load = new JMenuItem("Charger");
+		save = new JMenuItem("Enregistrer sous");
+		quit = new JMenuItem("Quitter");
 
+		
+		load.setEnabled(true);
+		save.setEnabled(false);
+		quit.setEnabled(true);
+		
+		JPanel pnl = new JPanel();
+		pnl.setLayout(new GridLayout(14,1));
+		pnl.add(value);
+		pnl.add(convert);
+
+		aide = new JMenu("Aide");
+		menu = new JMenu("Fichier");
+		menubar = new JMenuBar();
+		menubar.add(menu);
+		menubar.add(aide);
+		menu.add(load);
+		menu.add(save);
+		menu.addSeparator();
+		menu.add(quit);
 		value.setEnabled(false);
 
-		this.setLayout(new GridLayout(9,1));
-		
-		this.add(load);
-		this.add(save);
-		this.add(value);
-		this.add(convert);
-		this.add(quit);
-		
+		this.setLayout(new BorderLayout());
+		this.add(menubar,BorderLayout.NORTH);
+		this.add(pnl,BorderLayout.CENTER);
+
 		initEvent();
 		repaint();
 	}
 
 	public void initEvent()
 	{
-		load.addMouseListener(new MouseListener()
+		load.addActionListener(new ActionListener()
 		{
-			public void mouseClicked(MouseEvent e)
+			public void actionPerformed(ActionEvent e)
 			{
 				JFileChooser loader = new JFileChooser("~");
 				if(loader.showOpenDialog(load)==JFileChooser.APPROVE_OPTION)
 				{
 					panelImage.loadImage(loader.getSelectedFile().getPath());
 					panelImage.getParent().repaint();
+					save.setEnabled(true);
 				}
 			}
 			public void mouseEntered(MouseEvent e){}
@@ -81,9 +108,9 @@ public final class PanelTools extends JPanel
 			public void mouseReleased(MouseEvent e){}	
 		});
 
-		save.addMouseListener(new MouseListener()
+		save.addActionListener(new ActionListener()
 		{
-			public void mouseClicked(MouseEvent e)
+			public void actionPerformed(ActionEvent e)
 			{
 				JFileChooser loader = new JFileChooser("~");
 				if(loader.showSaveDialog(load)==JFileChooser.APPROVE_OPTION)
@@ -99,9 +126,9 @@ public final class PanelTools extends JPanel
 			public void mouseReleased(MouseEvent e){}	
 		});
 
-		quit.addMouseListener(new MouseListener()
+		quit.addActionListener(new ActionListener()
 		{
-			public void mouseClicked(MouseEvent e)
+			public void actionPerformed(ActionEvent e)
 			{
 				System.exit(0);	
 			}
@@ -125,6 +152,9 @@ public final class PanelTools extends JPanel
 		convert.repaint();
 		load.repaint();
 		quit.repaint();
+		menu.repaint();
+		aide.repaint();
+
 	}
 
 	public void modifyValue(Color back,Color text)

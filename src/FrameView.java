@@ -23,10 +23,9 @@ public final class FrameView extends JFrame
 
 	public FrameView()
 	{
-		super();
+		super("AlphaColor");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
-		this.setSize(900,800);
 		this.setPreferredSize(new Dimension(900,800));
 		this.setLayout(new BorderLayout());
 
@@ -52,15 +51,13 @@ public final class FrameView extends JFrame
 	{
 		panelImage.addMouseListener(new MouseListener()
 		{
-			public void mouseClicked(MouseEvent e)
+			public void process(MouseEvent e)
 			{
 				int v = panelImage.getPixel(e.getX(),e.getY());
 				int cv = ColorUtils.complement(v);
 				
 				panelImage.setColor(v);
 				
-				System.out.println(ColorUtils.canalAlpha(v));
-					
 				Color back = new Color(ColorUtils.canalRouge(v),
 					ColorUtils.canalVert(v),
 					ColorUtils.canalBleu(v));
@@ -69,9 +66,17 @@ public final class FrameView extends JFrame
 					ColorUtils.canalBleu(cv));
 				panelTools.modifyValue(back,text);
 			}
+
+			public void mouseClicked(MouseEvent e)
+			{
+				process(e);
+			}
 			public void mouseEntered(MouseEvent e){}
 			public void mouseExited(MouseEvent e){}
-			public void mousePressed(MouseEvent e){}
+			public void mousePressed(MouseEvent e)
+			{
+				//process(e);
+			}
 			public void mouseReleased(MouseEvent e){}
 		});
 	}
