@@ -22,6 +22,7 @@ public final class PanelTools extends JPanel
 	private JButton convert;
 	private JButton load;
 	private JButton save;
+	private JButton quit;
 
 	private PanelImage panelImage;
 
@@ -33,7 +34,8 @@ public final class PanelTools extends JPanel
 		convert = new JButton("Convertir");
 		load = new JButton("Charger");
 		save = new JButton("Sauver");
-	
+		quit = new JButton("Quitter");
+
 		value.setEnabled(false);
 
 		this.setLayout(new GridLayout(9,1));
@@ -42,6 +44,7 @@ public final class PanelTools extends JPanel
 		this.add(save);
 		this.add(value);
 		this.add(convert);
+		this.add(quit);
 		
 		initEvent();
 		repaint();
@@ -65,6 +68,49 @@ public final class PanelTools extends JPanel
 			public void mousePressed(MouseEvent e){}
 			public void mouseReleased(MouseEvent e){}	
 		});
+
+		convert.addMouseListener(new MouseListener()
+		{
+			public void mouseClicked(MouseEvent e)
+			{
+				panelImage.toAlpha();	
+			}
+			public void mouseEntered(MouseEvent e){}
+			public void mouseExited(MouseEvent e){}
+			public void mousePressed(MouseEvent e){}
+			public void mouseReleased(MouseEvent e){}	
+		});
+
+		save.addMouseListener(new MouseListener()
+		{
+			public void mouseClicked(MouseEvent e)
+			{
+				JFileChooser loader = new JFileChooser("~");
+				if(loader.showSaveDialog(load)==JFileChooser.APPROVE_OPTION)
+				{
+					ColorUtils.saveImage(panelImage.getImage(),
+						loader.getSelectedFile().getPath(),
+						ColorUtils.FORMAT_PNG);
+				}
+			}
+			public void mouseEntered(MouseEvent e){}
+			public void mouseExited(MouseEvent e){}
+			public void mousePressed(MouseEvent e){}
+			public void mouseReleased(MouseEvent e){}	
+		});
+
+		quit.addMouseListener(new MouseListener()
+		{
+			public void mouseClicked(MouseEvent e)
+			{
+				System.exit(0);	
+			}
+			public void mouseEntered(MouseEvent e){}
+			public void mouseExited(MouseEvent e){}
+			public void mousePressed(MouseEvent e){}
+			public void mouseReleased(MouseEvent e){}	
+		});
+
 	}
 
 	public void setPanelImage(PanelImage pnlImg)
@@ -78,6 +124,7 @@ public final class PanelTools extends JPanel
 		save.repaint();
 		convert.repaint();
 		load.repaint();
+		quit.repaint();
 	}
 
 	public void modifyValue(Color back,Color text)

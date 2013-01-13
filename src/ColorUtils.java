@@ -4,7 +4,12 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.FileInputStream;
 
-
+/**
+ * @author HETT KILIAN
+ * Classe contenant uniquement des méthodes static
+ * ces méthodes on un lien direct avec le comportement
+ * des images et de la manipulation des couleurs
+**/
 public class ColorUtils 
 {
 	// Constante sur les formats d'image
@@ -12,7 +17,7 @@ public class ColorUtils
 	public final static String FORMAT_PNG = "png";
 
 	// Constante sur les couleurs
-	public final static int ALPHA = 0xff000000;
+	public final static int ALPHA = 0x00000000;
 
 	public static int complement(int value)
 	{

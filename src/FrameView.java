@@ -31,9 +31,10 @@ public final class FrameView extends JFrame
 		this.setBackground(new Color(255,0,0));
 
 		panelImage = new PanelImage();
-		JScrollPane scroll = new JScrollPane(panelImage);	
+		JScrollPane scroll = new JScrollPane(panelImage);
 		panelTools = new PanelTools();
-
+		panelTools.setPanelImage(panelImage);
+	
 		initEvent();
 
 		this.add(scroll,BorderLayout.CENTER);

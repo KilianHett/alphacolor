@@ -20,6 +20,7 @@ public final class PanelImage extends JPanel
 	{
 		super();
 		this.setVisible(true);
+		this.setOpaque(false);
 		if (url!="")
 			loadImage(url);
 	}
@@ -45,7 +46,9 @@ public final class PanelImage extends JPanel
 	public void paint(Graphics g)
 	{
 		if (image!=null)
+		{
 			g.drawImage(image,0,0,image.getWidth(),image.getHeight(),null);
+		}
 	}
 
 	public void setImage(BufferedImage im)
@@ -70,5 +73,11 @@ public final class PanelImage extends JPanel
 	{
 		color = value;
 	}
-	
+
+	public void toAlpha()
+	{
+		ColorUtils.changeColour(image,color);
+		repaint();
+	}
+
 }
