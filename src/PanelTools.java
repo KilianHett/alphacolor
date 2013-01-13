@@ -16,6 +16,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSlider;
+import javax.swing.JLabel;
 
 
 /**
@@ -36,37 +37,47 @@ public final class PanelTools extends JPanel
 	private JMenu aide;
 	private JMenuBar menubar;
 	private JMenuItem load;
+	private JMenuItem saveas;
 	private JMenuItem save;
 	private JMenuItem quit;
 	private JSlider deltaSlider;
-
+	private JLabel deltaLabel;
 	private PanelImage panelImage;
+
 
 	public PanelTools()
 	{
 		super();
-	
-		delta = 0;
 
+		delta = 0;
+		path = "";
 		value = new JTextField("None");
 		convert = new JButton("Convertir");
 		load = new JMenuItem("Charger");
-		save = new JMenuItem("Enregistrer sous");
+		save = new JMenuItem("Enregistrer");
+		saveas = new JMenuItem("Enregistrer sous");
 		quit = new JMenuItem("Quitter");
 		deltaSlider = new JSlider(0,255);
+		deltaLabel = new JLabel("0");
 
 		deltaSlider.setValue(delta);	
 		deltaSlider.setPaintLabels(true);	
 		load.setEnabled(true);
 		save.setEnabled(false);
+		saveas.setEnabled(false);
 		quit.setEnabled(true);
 		
 		JPanel pnl = new JPanel();
+		JPanel pnlSlide = new JPanel();
+
 		pnl.setLayout(new GridLayout(14,1));
+		pnlSlide.setLayout(new BorderLayout());
+		pnlSlide.add(deltaSlider, BorderLayout.CENTER);
+		pnlSlide.add(deltaLabel, BorderLayout.EAST);
 		pnl.add(value);
 		pnl.add(convert);
-		pnl.add(deltaSlider);
-
+		pnl.add(pnlSlide);
+		
 		aide = new JMenu("Aide");
 		menu = new JMenu("Fichier");
 		menubar = new JMenuBar();
@@ -74,6 +85,7 @@ public final class PanelTools extends JPanel
 		menubar.add(aide);
 		menu.add(load);
 		menu.add(save);
+		menu.add(saveas);
 		menu.addSeparator();
 		menu.add(quit);
 		value.setEnabled(false);
@@ -95,9 +107,11 @@ public final class PanelTools extends JPanel
 				JFileChooser loader = new JFileChooser("~");
 				if(loader.showOpenDialog(load)==JFileChooser.APPROVE_OPTION)
 				{
+					path = loader.getSelectedFile().getPath();
 					panelImage.loadImage(loader.getSelectedFile().getPath());
 					panelImage.getParent().repaint();
 					save.setEnabled(true);
+					saveas.setEnabled(true);
 				}
 			}
 			public void mouseEntered(MouseEvent e){}
@@ -119,6 +133,23 @@ public final class PanelTools extends JPanel
 		});
 
 		save.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if (path!="")
+				{
+					ColorUtils.saveImage(panelImage.getImage(),
+							path, ColorUtils.FORMAT_PNG);
+				}
+			}
+			public void mouseEntered(MouseEvent e){}
+			public void mouseExited(MouseEvent e){}
+			public void mousePressed(MouseEvent e){}
+			public void mouseReleased(MouseEvent e){}	
+		});
+
+
+		saveas.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
@@ -157,6 +188,7 @@ public final class PanelTools extends JPanel
 			public void mouseReleased(MouseEvent e)
 			{
 				delta = deltaSlider.getValue();
+				deltaLabel.setText(String.valueOf(delta));
 			}	
 		});
 	}
@@ -176,6 +208,7 @@ public final class PanelTools extends JPanel
 		menu.repaint();
 		aide.repaint();
 		deltaSlider.repaint();
+		deltaLabel.repaint();
 	}
 
 	public void modifyValue(Color back,Color text)
