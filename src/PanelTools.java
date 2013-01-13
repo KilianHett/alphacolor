@@ -57,6 +57,7 @@ public final class PanelTools extends JPanel
 				if(loader.showOpenDialog(load)==JFileChooser.APPROVE_OPTION)
 				{
 					panelImage.loadImage(loader.getSelectedFile().getPath());
+					this.getParent().repaint();
 				}
 			}
 			public void mouseEntered(MouseEvent e){}
