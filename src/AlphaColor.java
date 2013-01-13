@@ -2,26 +2,26 @@
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
-public class AlphaColor
+/**
+ * @author HETT KILIAN
+ * Classe principale du programme, fait appelle à FrameView
+ * dans le cas ou l'utilisateur à préciser un chemin d'image
+ * l'ouvrir
+*/
+final public class AlphaColor
 {
 	public static void main(String[] args)
 	{
 		FrameView frame = new FrameView();
 
-		if (args.length != 2)
+		if (args.length == 1)
 		{
-			System.out.println("Usage : java AlphaColor <input> <output>");
-			System.exit(0);
+			BufferedImage image = ColorUtils.loadImage(args[0]);
+			if (!ColorUtils.changeColour(image, 0xff000000))
+			{
+				System.out.println("Petit probleme gros!");
+			}
+			frame.setImage(image);
 		}
-
-		BufferedImage image = ColorUtils.loadImage(args[0]);
-		if (!ColorUtils.changeColour(image, 0xff000000))
-		{
-			System.out.println("Petit probleme gros!");
-		}
-		
-		frame.setImage(image);
-			
-		ColorUtils.saveImage(image, ColorUtils.FORMAT_PNG, args[1]);
 	}
 }

@@ -20,7 +20,6 @@ public class PanelImage extends JPanel
 	{
 		super();
 		this.setVisible(true);
-		this.setSize(400,800);
 		if (url!="")
 			loadImage(url);
 	}
@@ -61,7 +60,10 @@ public class PanelImage extends JPanel
 
 	public int getPixel(int x, int y)
 	{
-		return image.getRGB(x,y);
+		if (image!=null)
+			return image.getRGB(x,y);
+		else
+			return 0;
 	}
 
 	public void setColor(int value)
