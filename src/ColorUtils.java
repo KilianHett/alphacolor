@@ -21,7 +21,7 @@ public class ColorUtils
 
 	public static int complement(int value)
 	{
-		return (value^0xffffff);
+		return (value^0xffffffff);
 	}
 
 	public static int canalAlpha(int value)
@@ -43,6 +43,31 @@ public class ColorUtils
 	{
 		return value&0x000000ff;
 	}
+
+	public static String typeToString(BufferedImage im)
+	{
+		switch (im.getType())
+		{
+			case BufferedImage.TYPE_INT_RGB:return "Mode RGB";
+			case BufferedImage.TYPE_INT_ARGB:return "Mode ARGB";
+			default: return "Mode inconue";
+		}
+	}
+
+	public static BufferedImage convertToAlphaMode(BufferedImage im)
+	{
+		BufferedImage tmp = new BufferedImage(im.getWidth(),
+				im.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		for (int i=0;i<im.getWidth();i++)
+		{
+			for (int j=0;j<im.getHeight();j++)
+			{
+				tmp.setRGB(i, j, im.getRGB(i,j)); 
+			}
+		}
+		return tmp;
+	}
+
 
 	public static boolean changeColour(BufferedImage im, int color)
 	{
@@ -72,7 +97,7 @@ public class ColorUtils
 	{
 		try
 		{
-			return ImageIO.read(new File(path));
+			return convertToAlphaMode(ImageIO.read(new File(path)));
 		}
 		catch (Exception e)
 		{

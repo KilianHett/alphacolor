@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.awt.Graphics;
 import java.awt.Color;
+import java.awt.Dimension;
 
 /**
  * @author HETT KILIAN
@@ -14,6 +15,7 @@ import java.awt.Color;
 public final class PanelImage extends JPanel
 {
 	private BufferedImage image;
+	private BufferedImage alpha;
 	private int color;
 
 	public PanelImage(String url)
@@ -21,6 +23,7 @@ public final class PanelImage extends JPanel
 		super();
 		this.setVisible(true);
 		this.setOpaque(false);
+		alpha = ColorUtils.loadImage("./img/alpha.bmp");
 		if (url!="")
 			loadImage(url);
 	}
@@ -37,6 +40,7 @@ public final class PanelImage extends JPanel
 	public void loadImage(String url)
 	{
 		image = ColorUtils.loadImage(url);
+		this.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
 	}
 
 	/**
@@ -47,6 +51,14 @@ public final class PanelImage extends JPanel
 	{
 		if (image!=null)
 		{
+			for (int i=0;i<(image.getWidth()/alpha.getWidth());i++)
+			{
+				for (int j=0;j<(image.getHeight()/alpha.getHeight());j++)
+				{
+					g.drawImage(alpha,i*alpha.getWidth(),j*alpha.getHeight(),
+						alpha.getWidth(),alpha.getHeight(),null);
+				}
+			}
 			g.drawImage(image,0,0,image.getWidth(),image.getHeight(),null);
 		}
 	}

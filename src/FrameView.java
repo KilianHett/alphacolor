@@ -19,6 +19,7 @@ public final class FrameView extends JFrame
 {
 	private PanelImage panelImage;
 	private PanelTools panelTools;
+	private JScrollPane scroll;
 
 	public FrameView()
 	{
@@ -28,10 +29,9 @@ public final class FrameView extends JFrame
 		this.setSize(900,800);
 		this.setPreferredSize(new Dimension(900,800));
 		this.setLayout(new BorderLayout());
-		this.setBackground(new Color(255,0,0));
 
 		panelImage = new PanelImage();
-		JScrollPane scroll = new JScrollPane(panelImage);
+		scroll = new JScrollPane(panelImage);
 		panelTools = new PanelTools();
 		panelTools.setPanelImage(panelImage);
 	
@@ -58,7 +58,9 @@ public final class FrameView extends JFrame
 				int cv = ColorUtils.complement(v);
 				
 				panelImage.setColor(v);
-
+				
+				System.out.println(ColorUtils.canalAlpha(v));
+					
 				Color back = new Color(ColorUtils.canalRouge(v),
 					ColorUtils.canalVert(v),
 					ColorUtils.canalBleu(v));
@@ -82,9 +84,11 @@ public final class FrameView extends JFrame
 
 	public void paint(Graphics g)
 	{ 	
-		if (panelImage!=null)
+		if (scroll != null)
+			scroll.repaint();
+		if (panelImage!= null)
 			panelImage.repaint();
-		if (panelTools!=null)
+		if (panelTools!= null)
 			panelTools.repaint();
 	}
 }
