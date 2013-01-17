@@ -32,6 +32,7 @@ public final class PanelTools extends JPanel
 
 	private JTextField value;
 	private JButton convert;
+	private JButton diffuse;
 	private JMenu menu;
 	private JMenu option;
 	private JMenu aide;
@@ -53,6 +54,7 @@ public final class PanelTools extends JPanel
 		path = "";
 		value = new JTextField("None");
 		convert = new JButton("Convertir");
+		diffuse = new JButton("Diffusion");
 		load = new JMenuItem("Charger");
 		save = new JMenuItem("Enregistrer");
 		saveas = new JMenuItem("Enregistrer sous");
@@ -76,6 +78,7 @@ public final class PanelTools extends JPanel
 		pnlSlide.add(deltaLabel, BorderLayout.EAST);
 		pnl.add(value);
 		pnl.add(convert);
+		pnl.add(diffuse);
 		pnl.add(pnlSlide);
 		
 		aide = new JMenu("Aide");
@@ -125,6 +128,18 @@ public final class PanelTools extends JPanel
 			public void mouseClicked(MouseEvent e)
 			{
 				panelImage.toAlpha(delta);	
+			}
+			public void mouseEntered(MouseEvent e){}
+			public void mouseExited(MouseEvent e){}
+			public void mousePressed(MouseEvent e){}
+			public void mouseReleased(MouseEvent e){}	
+		});
+
+		diffuse.addMouseListener(new MouseListener()
+		{
+			public void mouseClicked(MouseEvent e)
+			{
+				panelImage.toAlphaDiffusion(delta);	
 			}
 			public void mouseEntered(MouseEvent e){}
 			public void mouseExited(MouseEvent e){}
@@ -203,6 +218,7 @@ public final class PanelTools extends JPanel
 		value.repaint();
 		save.repaint();
 		convert.repaint();
+		diffuse.repaint();
 		load.repaint();
 		quit.repaint();
 		menu.repaint();

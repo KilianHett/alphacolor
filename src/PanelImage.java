@@ -16,7 +16,9 @@ public final class PanelImage extends JPanel
 {
 	private BufferedImage image;
 	private BufferedImage alpha;
-	private int color;
+	private int color=-102;
+	private int x=-102;
+	private int y=-102;
 
 	public PanelImage(String url)
 	{
@@ -86,10 +88,33 @@ public final class PanelImage extends JPanel
 		color = value;
 	}
 
+	public void setCoordinate(int _x, int _y)
+	{
+		x = _x;
+		y = _y;
+	}
+
 	public void toAlpha(int delta)
 	{
-		ColorUtils.changeColour(image,color,delta);
-		repaint();
+		if (isGreat(color))
+		{
+			ColorUtils.changeColour(image,color,delta);
+			repaint();
+		}
+	}
+
+	public void toAlphaDiffusion(int delta)
+	{
+		if (isGreat(color) && isGreat(x) && isGreat(y))
+		{
+			ColorUtils.colorDiffusion(image, x, y, color, delta);
+			repaint();
+		}
+	}
+
+	private boolean isGreat(int x)
+	{
+		return x!=-102;
 	}
 
 }

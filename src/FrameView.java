@@ -57,6 +57,7 @@ public final class FrameView extends JFrame
 				int cv = ColorUtils.complement(v);
 				
 				panelImage.setColor(v);
+				panelImage.setCoordinate(e.getX(),e.getY());
 				
 				Color back = new Color(ColorUtils.canalRouge(v),
 					ColorUtils.canalVert(v),

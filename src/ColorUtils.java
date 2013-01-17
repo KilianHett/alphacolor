@@ -104,30 +104,35 @@ public class ColorUtils
 		}
 	}
 
-	public static boolean colorDiffusion(BufferedImage im, int x, int y, int color, int delta)
+	public static boolean colorDiffusion(BufferedImage im, int x, int y, 
+			int color, int delta)
 	{
 		try
 		{
-			if (isInColoInterval(im.getRGB(x,y),color, delta) 
+			if (isInColorInterval(im.getRGB(x,y),color, delta) 
 					&& canalAlpha(im.getRGB(x,y))!=0)
 			{
-				im.setRGB(i,j,ALPHA);
-				for (int i=0;i<3;i++)
+				im.setRGB(x,y,ALPHA);
+				for (int i=x-1;i<=x+1;i++)
 				{
-					for (int j=0;j<3;j++)
+					for (int j=y-1;j<=y+1;j++)
 					{
-						if (i!=1 && j!=1)
+						if (!(i==x && j==y) && i<im.getWidth()
+								&& j<im.getHeight() 
+								&& i>=0 && j>=0)
 						{
-							colorDiffusion(im, x+i-1, y+j-1,color, delta);
+							colorDiffusion(im, i, j, color, delta);
 						}
 					}
 				}
 			}
+			return true;
 		}
 		catch(Exception e)
 		{
 			System.out.println(e.getMessage());
 			e.printStackTrace();
+			return false;
 		}
 	}	
 
