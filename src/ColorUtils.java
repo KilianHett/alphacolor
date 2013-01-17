@@ -104,6 +104,33 @@ public class ColorUtils
 		}
 	}
 
+	public static boolean colorDiffusion(BufferedImage im, int x, int y, int color, int delta)
+	{
+		try
+		{
+			if (isInColoInterval(im.getRGB(x,y),color, delta) 
+					&& canalAlpha(im.getRGB(x,y))!=0)
+			{
+				im.setRGB(i,j,ALPHA);
+				for (int i=0;i<3;i++)
+				{
+					for (int j=0;j<3;j++)
+					{
+						if (i!=1 && j!=1)
+						{
+							colorDiffusion(im, x+i-1, y+j-1,color, delta);
+						}
+					}
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+	}	
+
 	public static BufferedImage loadImage(String path)
 	{
 		try
