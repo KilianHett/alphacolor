@@ -10,7 +10,8 @@ import java.awt.Dimension;
  * @author HETT KILIAN
  * @see FrameView
  * Cette classe se charge d'afficher les images
- * elle supporte les comportements de clique de la souris
+ * et d'appliquer des transformations sur cette 
+ * dernière
 **/
 public final class PanelImage extends JPanel
 {
@@ -116,5 +117,4 @@ public final class PanelImage extends JPanel
 	{
 		return x!=-102;
 	}
-
 }

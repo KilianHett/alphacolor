@@ -107,12 +107,11 @@ public class ColorUtils
 	public static void colorDiffusion(BufferedImage im, int x, int y, 
 			int color, int delta)
 	{
-		if(x<im.getWidth() && y<im.getHeight() 
-			&& x>=0 && y>=0)
+		if(x<im.getWidth()/2 && y<im.getHeight()/2 && x>=0 && y>=0)
 		{
 			try
 			{
-				if (isInColorInterval(im.getRGB(x,y),color, delta) 
+				if (isInColorInterval(im.getRGB(x,y),color, delta)
 						&& canalAlpha(im.getRGB(x,y))!=0)
 				{
 					im.setRGB(x,y,ALPHA);
