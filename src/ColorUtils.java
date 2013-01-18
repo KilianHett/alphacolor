@@ -15,6 +15,7 @@ public class ColorUtils
 	// Constante sur les formats d'image
 	public final static String FORMAT_JPEG = "jpeg";
 	public final static String FORMAT_PNG = "png";
+	public static BufferedImage temp = null;
 
 	// Constante sur les couleurs
 	public final static int ALPHA = 0x00000000;
@@ -80,59 +81,67 @@ public class ColorUtils
 			inInterval(canalBleu(value), canalBleu(color), delta);
 	}
 
-	public static boolean changeColour(BufferedImage im, int color, int delta)
+	public static void changeColour(BufferedImage im, int color, int delta)
 	{
-		try
+		for (int i=0;i<im.getWidth();i++)
 		{
-			for (int i=0;i<im.getWidth();i++)
+			for (int j=0;j<im.getHeight();j++)
 			{
-				for (int j=0;j<im.getHeight();j++)
+				if (isInColorInterval(im.getRGB(i,j),color,delta))
 				{
-					if (isInColorInterval(im.getRGB(i,j),color,delta))
+					im.setRGB(i,j,ALPHA);
+				}
+			}
+		}
+	}
+
+	private static void processDiffusion(int x, int y, int color, int delta)
+	{
+		if(x<temp.getWidth() && y<temp.getHeight() && x>=0 && y>=0)
+		{
+			if (isInColorInterval(temp.getRGB(x,y),color, delta)
+					&& canalAlpha(temp.getRGB(x,y))!=0)
+			{
+				temp.setRGB(x,y,ALPHA);
+				Thread t;
+				for (int i=x-1;i<=x+1;i++)
+				{
+					for (int j=y-1;j<=y+1;j++)
 					{
-						im.setRGB(i,j,ALPHA);
+						if (!(i==x && j==y) && x<temp.getWidth() &&
+							   	y<temp.getHeight() && x>=0 && y>=0)
+						{
+							try
+							{
+								final int _i=i, _j=j, _color=color, _delta=delta;
+								t = new Thread()
+								{
+									public void run()
+									{
+										//System.out.println("_ok pour "+_i+" "+_j);
+										processDiffusion(_i, _j, _color, _delta);
+									}
+								};
+								t.start();
+								t.join();
+							}
+							catch(Exception e)
+							{
+								//
+							}
+							//processDiffusion(i, j, color, delta);
+						}
 					}
 				}
 			}
-			return true;
-		}
-		catch (Exception e)
-		{
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-			return false;
 		}
 	}
 
 	public static void colorDiffusion(BufferedImage im, int x, int y, 
 			int color, int delta)
 	{
-		if(x<im.getWidth()/2 && y<im.getHeight()/2 && x>=0 && y>=0)
-		{
-			try
-			{
-				if (isInColorInterval(im.getRGB(x,y),color, delta)
-						&& canalAlpha(im.getRGB(x,y))!=0)
-				{
-					im.setRGB(x,y,ALPHA);
-					for (int i=x-1;i<=x+1;i++)
-					{
-						for (int j=y-1;j<=y+1;j++)
-						{
-							if (!(i==x && j==y))
-							{
-								colorDiffusion(im, i, j, color, delta);
-							}
-						}
-					}
-				}
-			}
-			catch(Exception e)
-			{
-				System.out.println(e.getMessage());
-				e.printStackTrace();
-			}
-		}
+		temp = im;
+		processDiffusion(x, y, color, delta);
 	}	
 
 	public static BufferedImage loadImage(String path)

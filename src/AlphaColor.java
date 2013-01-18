@@ -27,10 +27,6 @@ final public class AlphaColor
 		if (args.length == 1)
 		{
 			BufferedImage image = ColorUtils.loadImage(args[0]);
-			if (!ColorUtils.changeColour(image, 0xff000000, 10))
-			{
-				System.out.println("Petit probleme gros!");
-			}
 			frame.setImage(image);
 		}
 	}
