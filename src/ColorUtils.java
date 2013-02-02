@@ -15,7 +15,6 @@ public class ColorUtils
 	// Constante sur les formats d'image
 	public final static String FORMAT_JPEG = "jpeg";
 	public final static String FORMAT_PNG = "png";
-	public static BufferedImage temp = null;
 
 	// Constante sur les couleurs
 	public final static int ALPHA = 0x00000000;
@@ -95,54 +94,55 @@ public class ColorUtils
 		}
 	}
 
-	private static void processDiffusion(int x, int y, int color, int delta)
-	{
-		if(x<temp.getWidth() && y<temp.getHeight() && x>=0 && y>=0)
-		{
-			if (isInColorInterval(temp.getRGB(x,y),color, delta)
-					&& canalAlpha(temp.getRGB(x,y))!=0)
-			{
-				temp.setRGB(x,y,ALPHA);
-				Thread t;
-				for (int i=x-1;i<=x+1;i++)
-				{
-					for (int j=y-1;j<=y+1;j++)
-					{
-						if (!(i==x && j==y) && x<temp.getWidth() &&
-							   	y<temp.getHeight() && x>=0 && y>=0)
-						{
-							try
-							{
-								final int _i=i, _j=j, _color=color, _delta=delta;
-								t = new Thread()
-								{
-									public void run()
-									{
-										//System.out.println("_ok pour "+_i+" "+_j);
-										processDiffusion(_i, _j, _color, _delta);
-									}
-								};
-								t.start();
-								t.join();
-							}
-							catch(Exception e)
-							{
-								//
-							}
-							//processDiffusion(i, j, color, delta);
-						}
-					}
-				}
-			}
-		}
-	}
-
 	public static void colorDiffusion(BufferedImage im, int x, int y, 
 			int color, int delta)
 	{
-		temp = im;
-		processDiffusion(x, y, color, delta);
+		int maxX=(x<im.getWidth()/2?im.getWidth()-x:x);
+		int maxY=(y<im.getHeight()/2?im.getHeight()-y:y);
+		int max = (maxX>maxY?maxX:maxY);
+
+		for (int i=0;i<max;i++)
+		{
+			for (int m=0;m<i;m++)
+			{
+				if (hasNeighborColor(im, x+m-i/2, y+m-i/2, color, delta) 
+					&& hasNeighborColor(im, x+m-i/2, y+m-i/2, ALPHA, 0) 
+					&& isInImage(im, x+m-i/2, y+m-i/2) && isInColorInterval(im.getRGB(x+m-i/2, y+m-i/2), color, delta))
+				{
+					im.setRGB(x+m-(i/2),y+m-(i/2), ALPHA);
+				}
+				
+				
+				if (hasNeighborColor(im, x-m+i/2, y-m+i/2, color, delta) 
+					&& hasNeighborColor(im, x-m+i/2, y-m+i/2, ALPHA, 0) 
+					&& isInImage(im, x-m+i/2, y-m+i/2) && isInColorInterval(im.getRGB(x-m+i/2, y-m+i/2), color, delta))
+				{
+					im.setRGB(x-m+i/2,y-m+i/2,ALPHA);
+				}
+			}
+		}
 	}	
+
+	public static boolean hasNeighborColor(BufferedImage im, int x, int y, int color, int delta)
+	{
+		boolean b = false;
+		for (int i=x-1;i<=x+1;i++)
+		{
+			for (int j=y-1;j<=y+1;j++)
+			{
+				if (isInImage(im,x,y))
+				{
+					b = b || isInColorInterval(im.getRGB(x,y), color, delta);
+				}
+			}
+		}
+		return b;
+	}
+
+	public static boolean isInImage(BufferedImage im, int x, int y)
+	{
+		return x<im.getWidth() && y<im.getHeight() && x>=0 && y>=0;
+	}
 
 	public static BufferedImage loadImage(String path)
 	{
